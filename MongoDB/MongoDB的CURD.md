@@ -411,3 +411,35 @@ db.inventory.updateOne(
 
 更多的操作符可以参考 [CURD的具体操作符](CURD的具体操作符.md) ，不做过多的展示了。
 
+## 4.Delete Documents
+
+对以下的数据进行操作：
+
+```js
+db.inventory.insertMany( [
+   { item: "journal", qty: 25, size: { h: 14, w: 21, uom: "cm" }, status: "A" },
+   { item: "notebook", qty: 50, size: { h: 8.5, w: 11, uom: "in" }, status: "P" },
+   { item: "paper", qty: 100, size: { h: 8.5, w: 11, uom: "in" }, status: "D" },
+   { item: "planner", qty: 75, size: { h: 22.85, w: 30, uom: "cm" }, status: "D" },
+   { item: "postcard", qty: 45, size: { h: 10, w: 15.25, uom: "cm" }, status: "A" },
+] );
+```
+
+**删除所有在集合中的文档**
+
+```js
+db.inventory.deleteMany({})
+```
+
+**删除所有条件匹配的文档**
+
+```js
+db.inventory.deleteMany({ status : "A" })
+```
+
+**删除一个条件匹配的文档**
+
+```js
+db.inventory.deleteOne({ status : "A" })
+```
+
