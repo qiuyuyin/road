@@ -47,6 +47,7 @@
 
   1.  **[MongoDB入门](MongoDB/MongoDB入门.md)** 
   2.  **[MongoDB的CURD](MongoDB/MongoDB的CURD.md)** 
+  3.   **[MongoDb的聚合操作](MongoDB/MongoDb的聚合操作.md)** 
 
 
 
