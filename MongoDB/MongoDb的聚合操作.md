@@ -4,8 +4,6 @@
 
 在[db.collection.aggregate]方法中，管道阶段出现在数组中。文档按顺序通过各个阶段。除$out, $merge和$geoNear阶段之外的所有阶段都可以在管道中多次出现。
 
-
-
 ```
 db.collection.aggregate( [ { <stage> }, ... ] )
 ```
@@ -89,8 +87,6 @@ db.course.aggregate(
 ]
 ```
 
-
-
 - `unwind`
 
 将数组进行拆分，得到数组长度个数的文档，一般用于数组中元素的统计
@@ -101,7 +97,7 @@ db.course.aggregate(
 
 ```js
 db.course.aggregate(
-   [
+   [	
      { $unwind: "$course" },
      { $group: { _id: "$course", sum: { $sum: 1 }} },
      { $sort: { sum: -1} }
