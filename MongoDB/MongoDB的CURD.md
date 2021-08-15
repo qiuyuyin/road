@@ -56,8 +56,6 @@ SELECT * FROM inventory WHERE status = "D"
 db.collection.find(query, projection)
 ```
 
-
-
 ### MongoDB 与 RDBMS Where 语句比较
 
 如果你熟悉常规的 SQL 数据，通过下表可以更好的理解 MongoDB 的条件语句查询：

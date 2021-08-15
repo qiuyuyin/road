@@ -49,6 +49,10 @@
   2.  **[MongoDB的CURD](MongoDB/MongoDB的CURD.md)** 
   3.   **[MongoDb的聚合操作](MongoDB/MongoDb的聚合操作.md)** 
 
+- #### Redis
+
+  1.  **[Redis基础](Redis/Redis基础.md)** 
+
 
 
 ## 📑 后 记
