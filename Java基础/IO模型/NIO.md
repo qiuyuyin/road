@@ -26,3 +26,13 @@
   - 方法B: 使用线程进行处理的 阻塞式/非阻塞式 同步IO
   - 方法C: 阻塞式/非阻塞式 多路复用IO，也就是要使用的NIO操作
 
+## 2.三个重要概念：
+
+- ### channel
+
+- ServerSocketChannel: 应用服务器程序的监听通道。只有通过这个通道，应用程序才能向操作系统注册支持“多路复用IO”的端口监听。同时支持UDP协议和TCP协议。
+- ScoketChannel: TCP Socket套接字的监听通道，一个Socket套接字对应了一个客户端IP: 端口 到 服务器IP: 端口的通信连接。
+- DatagramChannel: UDP 数据报文的监听通道。
+
+### 
+
