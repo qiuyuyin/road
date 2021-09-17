@@ -51,9 +51,9 @@ ServerBootstrap存在两个EventLoopGroup，也就是在绑定这个引导时需
 非池化 + 堆内存 + 不安全，UnpooledUnsafeHeapByteBuf；
 非池化 + 直接内存 + 不安全，UnpooledUnsafeDirectByteBuf
 
+### 2.1ByteBuf的使用模式
 
-
-### 1.堆缓冲区
+1.堆缓冲区
 
  堆缓冲区就是将数据存储在JVM的空间中。模式被称为支撑数组（backing array），可以在没有池化的情况下提供快速的分配和释放。
 
@@ -62,7 +62,7 @@ ServerBootstrap存在两个EventLoopGroup，也就是在绑定这个引导时需
 
 ![image-20210917153123984](Netty梳理.assets/image-20210917153123984.png)
 
-### 2.直接缓冲区
+#### 2.直接缓冲区
 
 直接缓冲区的内容是驻留在堆缓冲区之外的，在IO操作时可以直接将数据发送出去。
 
@@ -72,7 +72,7 @@ ServerBootstrap存在两个EventLoopGroup，也就是在绑定这个引导时需
 
 ![image-20210917154306028](Netty梳理.assets/image-20210917154306028.png)
 
-### 3.复合缓冲区
+#### 3.复合缓冲区
 
 复合缓冲区就是基于上述的两种缓冲区类型来进行实现的。
 
@@ -81,3 +81,27 @@ Composite是Netty所特有的一个缓冲区模式，可以复合地使用两种
 通过建立一个复合的缓冲模式，然后将另外的两个种类放入到这个组件中
 
 ![image-20210917154738274](Netty梳理.assets/image-20210917154738274.png)
+
+### 2.2字节级操作
+
+#### 2.2.1随机读写
+
+通过调用get方法进行随机读写
+
+```java
+ByteBuf byteBuf = Unpooled.copiedBuffer("yili", CharsetUtil.UTF_8);
+for (int i = 0; i < byteBuf.capacity(); i++) {
+    byte b = byteBuf.getByte(i);
+    System.out.println((char) b);
+}
+System.out.println(byteBuf.toString(CharsetUtil.UTF_8));
+```
+
+#### 2.2.2两种索引
+
+由于ByteBuf中存在两种索引，所以在进行读写的时候不需要使用flip来进行读写转换，不用对此时是读模式还是写模式来进行判断。
+
+![image-20210917173038912](Netty%E6%A2%B3%E7%90%86.assets/image-20210917173038912.png)
+
+可以在图中看见两个索引操作模式，readerIndex之前的字节都是可以进行抛弃的字节，中间的字节为可读字节，最后的是没有写入的字节，为可写字节。
+
