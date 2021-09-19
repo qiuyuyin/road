@@ -105,3 +105,69 @@ System.out.println(byteBuf.toString(CharsetUtil.UTF_8));
 
 可以在图中看见两个索引操作模式，readerIndex之前的字节都是可以进行抛弃的字节，中间的字节为可读字节，最后的是没有写入的字节，为可写字节。
 
+## 3.Channel
+
+在netty中也存在一个Channel，和 Java 原生 NIO 中的 Channel 
+
+![在这里插入图片描述](Netty梳理.assets/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2FiYzEyM2x6Zg==,size_27,color_FFFFFF,t_70.png)
+
+
+
+在Channel中存在着三个组件：ChannelPipeline,ChannelContextHandler,ChannelHandler.
+
+这三个组件之间的关系如下：
+
+![图片描述](Netty梳理.assets/334be90aae21dbfda948c43f0c7fed18.png)
+
+pipline的使用很单一，一般就是将一个Handler加入到这个管道中。
+
+### ChannelHandler
+
+ChannelHandler也包含有两种传递方式：第一种是接入消息的传递，另一种是发出消息的传递
+
+**Inbound 的顺序**
+
+流转顺序： 多个 Inbound 不会自动往下流转，需要手工调用 ctx.fireChannelRead(msg); 才能流转到下一个；
+
+执行顺序： 业务逻辑的执行顺序，则根据 ctx.fireChannelRead(msg); 和逻辑的先后顺序所决定；
+
+Inbound 往 Outbound 流转，则需要手工 ctx.channel().writeAndFlush()。
+**Outbound 的顺序**
+
+流转顺序： 多个 Outbound 不会自动往下流转，需要手工调用 ctx.write(msg, promise); 才能流转到下一个；
+
+执行顺序： 业务逻辑的执行顺序，则根据 ctx.write(msg, promise); 和逻辑的先后顺序所决定。
+
+
+在Handler中生命周期如下：
+
+![图片描述](Netty梳理.assets/0a86f2482bbd9b3aa3915c1056821370.png)
+
+需要注意的问题：
+
+1. 注意 channelRead 和 channelReadComplete 之间的关系。
+2. 注意 channel关闭会发生的事情
+3. 注意在不同阶段所执行的次数
+
+### EventLoop
+
+EventLoop的核心作用是，将连接进入的客户端分配一个Channel，并且给Channel分配一个EventLoop和ChannelPipeline。一个负责Channel相关的业务处理，另一个负责管理业务逻辑。
+
+1. 监控端口
+2. 处理端口事件，将其分发
+3. 处理队列事件
+
+EvenLoop和Channel是一对多的关系
+
+![image-20210918201414993](Netty梳理.assets/image-20210918201414993.png)
+
+EventLoopGroup 负责为每个新创建的 Channel 分配一个 EventLoop。在当前实现中， 使用顺序循环（round-robin）的方式进行分配以获取一个均衡的分布，并且相同的 EventLoop 可能会被分配给多个 Channel。（这一点在将来的版本中可能会改变。） 
+
+一旦一个 Channel 被分配给一个 EventLoop，它将在它的整个生命周期中都使用这个 EventLoop（以及相关联的 Thread）。请牢记这一点，因为它可以使你从担忧你的 ChannelHandler 实现中的线程安全和同步问题中解脱出来。 
+
+另外，需要注意的是，EventLoop 的分配方式对 ThreadLocal 的使用的影响。因为一个 EventLoop 通常会被用于支撑多个 Channel，所以对于所有相关联的 Channel 来说， ThreadLocal 都将是一样的。这使得它对于实现状态追踪等功能来说是个糟糕的选择。然而， 在一些无状态的上下文中，它仍然可以被用于在多个 Channel 之间共享一些重度的或者代价昂 贵的对象，甚至是事件。
+
+> 但是在阻塞模型下，数据的传播是基于一个Channel绑定一个EventLoop，不支持绑定多个。
+
+## 
+
