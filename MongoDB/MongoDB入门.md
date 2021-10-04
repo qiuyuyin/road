@@ -1,5 +1,7 @@
 ## MongoDB入门
 
+![image-20211004225937441](https://i.loli.net/2021/10/04/R5mOBnMaeyZ7cpT.png)
+
 ### 一、文档
 
 文档则相当于Js中的一组对象，存在着多组不同的键值对

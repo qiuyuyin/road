@@ -73,7 +73,7 @@ public void remove() {
 
 ### 3.内存泄漏
 
-![image-20211003205233373](ThreadLocal.assets/image-20211003205233373.png)
+![image-20211003205233373](https://i.loli.net/2021/10/04/y9MpS63eI7GWV2R.png)
 
 由于Entry中所保存对ThreadLocal是作为虚引用。在下一次GC后key值的引用就会消失，ThreadLocal会被虚拟机进行回收。
 
@@ -120,4 +120,6 @@ private Entry getEntryAfterMiss(ThreadLocal<?> key, int i, Entry e) {
 在搜索的过程中，会对
 
 key为null的entry进行删除操作，将value的值赋值为null，之后在gc的时候value会被清除。
+
+
 

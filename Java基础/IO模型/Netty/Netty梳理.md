@@ -2,13 +2,13 @@
 
 Netty在java中使用非常广泛，通过对Java NIO进行梳理得到的一个易于使用的IO类型框架。
 
-![在这里插入图片描述](Netty梳理.assets/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQzMzI3MDkx,size_16,color_FFFFFF,t_70#pic_center.png)
+![](https://i.loli.net/2021/10/04/eW4uQRdOSz5NnGc.png)
 
 ## 1.引导
 
 存在两种类型的引导方式：一种用于客户端的是Bootstrap，另一种是用于服务端的ServerBootstrap。
 
-![image-20210917114716819](Netty梳理.assets/image-20210917114716819.png)
+![image-20210917114716819](https://i.loli.net/2021/10/04/dqHcIUPWlnTQv8e.png)
 
 ServerBootstrap存在两个EventLoopGroup，也就是在绑定这个引导时需要建立两个group，他们两个分别有着不同的作用，一个是监听作用，另一个是接受来自客户端的Channel。
 
@@ -60,7 +60,7 @@ ServerBootstrap存在两个EventLoopGroup，也就是在绑定这个引导时需
 - 优点：可以看见，对堆缓冲区中的数据进行访问的时候，直接返回这个缓冲区数组的引用。
 - 缺点：在每次进行IO操作的时候都需要将数据复制到直接缓冲区中
 
-![image-20210917153123984](Netty梳理.assets/image-20210917153123984.png)
+![image-20210917153123984](https://i.loli.net/2021/10/04/w7ukEUcMRSyAG6q.png)
 
 #### 2.直接缓冲区
 
@@ -70,7 +70,7 @@ ServerBootstrap存在两个EventLoopGroup，也就是在绑定这个引导时需
 
 每次对直接缓冲区中的数据进行访问时，不能直接返回一个数组的引用，而是要将复制到一个新生成的数组中，通过这个新数组来进行访问。
 
-![image-20210917154306028](Netty梳理.assets/image-20210917154306028.png)
+![image-20210917154306028](https://i.loli.net/2021/10/04/mbhBUTEjwiMz2sf.png)
 
 #### 3.复合缓冲区
 
@@ -80,7 +80,7 @@ Composite是Netty所特有的一个缓冲区模式，可以复合地使用两种
 
 通过建立一个复合的缓冲模式，然后将另外的两个种类放入到这个组件中
 
-![image-20210917154738274](Netty梳理.assets/image-20210917154738274.png)
+![image-20210917154738274](https://i.loli.net/2021/10/04/dsQVIxqbL1EOcg4.png)
 
 ### 2.2字节级操作
 
@@ -101,7 +101,7 @@ System.out.println(byteBuf.toString(CharsetUtil.UTF_8));
 
 由于ByteBuf中存在两种索引，所以在进行读写的时候不需要使用flip来进行读写转换，不用对此时是读模式还是写模式来进行判断。
 
-![image-20210917173038912](Netty%E6%A2%B3%E7%90%86.assets/image-20210917173038912.png)
+![image-20210917173038912](https://i.loli.net/2021/10/04/ziM6CtFr7o2ehsj.png)
 
 可以在图中看见两个索引操作模式，readerIndex之前的字节都是可以进行抛弃的字节，中间的字节为可读字节，最后的是没有写入的字节，为可写字节。
 
@@ -109,7 +109,7 @@ System.out.println(byteBuf.toString(CharsetUtil.UTF_8));
 
 在netty中也存在一个Channel，和 Java 原生 NIO 中的 Channel 
 
-![在这里插入图片描述](Netty梳理.assets/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2FiYzEyM2x6Zg==,size_27,color_FFFFFF,t_70.png)
+![在这里插入图片描述](https://i.loli.net/2021/10/04/Gt3kCwQhLA51jyH.png)
 
 
 
@@ -117,7 +117,7 @@ System.out.println(byteBuf.toString(CharsetUtil.UTF_8));
 
 这三个组件之间的关系如下：
 
-![图片描述](Netty梳理.assets/334be90aae21dbfda948c43f0c7fed18.png)
+![图片描述](https://i.loli.net/2021/10/04/VYunZLcR4jJGHBA.png)
 
 pipline的使用很单一，一般就是将一个Handler加入到这个管道中。
 
@@ -141,7 +141,7 @@ Inbound 往 Outbound 流转，则需要手工 ctx.channel().writeAndFlush()。
 
 在Handler中生命周期如下：
 
-![图片描述](Netty梳理.assets/0a86f2482bbd9b3aa3915c1056821370.png)
+![图片描述](https://i.loli.net/2021/10/04/LjgVnUq5BDGolCb.png)
 
 需要注意的问题：
 
@@ -159,7 +159,7 @@ EventLoop的核心作用是，将连接进入的客户端分配一个Channel，�
 
 EvenLoop和Channel是一对多的关系
 
-![image-20210918201414993](Netty梳理.assets/image-20210918201414993.png)
+![image-20210918201414993](https://i.loli.net/2021/10/04/LBWgycwKEST41oC.png)
 
 EventLoopGroup 负责为每个新创建的 Channel 分配一个 EventLoop。在当前实现中， 使用顺序循环（round-robin）的方式进行分配以获取一个均衡的分布，并且相同的 EventLoop 可能会被分配给多个 Channel。（这一点在将来的版本中可能会改变。） 
 
@@ -169,5 +169,5 @@ EventLoopGroup 负责为每个新创建的 Channel 分配一个 EventLoop。在�
 
 > 但是在阻塞模型下，数据的传播是基于一个Channel绑定一个EventLoop，不支持绑定多个。
 
-## 
+
 

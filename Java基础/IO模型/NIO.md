@@ -74,7 +74,7 @@ private int capacity;Copy
 - put()方法可以将一个数据放入到缓冲区中。
 - 进行该操作后，postition的值会+1，指向下一个可以放入的位置。capacity = limit ，为缓冲区容量的值。
 
-[![img](NIO.assets/20201109145709.png)](https://nyimapicture.oss-cn-beijing.aliyuncs.com/img/20201109145709.png)
+[![img](https://i.loli.net/2021/10/04/LHMFEq8fArBW3I5.png)](https://nyimapicture.oss-cn-beijing.aliyuncs.com/img/20201109145709.png)
 
 ##### flip()方法
 
@@ -83,28 +83,28 @@ private int capacity;Copy
   - 如果是写模式->读模式，position = 0 ， limit 指向最后一个元素的下一个位置，capacity不变
   - 如果是读->写，则恢复为put()方法中的值
 
-[![img](NIO.assets/20201109145753.png)](https://nyimapicture.oss-cn-beijing.aliyuncs.com/img/20201109145753.png)
+[![img](https://i.loli.net/2021/10/04/kjIsmSZpM4a3gfT.png)](https://nyimapicture.oss-cn-beijing.aliyuncs.com/img/20201109145753.png)
 
 ##### get()方法
 
 - get()方法会读取缓冲区中的一个值
 - 进行该操作后，position会+1，如果超过了limit则会抛出异常
 
-[![img](NIO.assets/20201109145822.png)](https://nyimapicture.oss-cn-beijing.aliyuncs.com/img/20201109145822.png)
+[![img](https://i.loli.net/2021/10/04/vjfqZTktEWD9oYg.png)](https://nyimapicture.oss-cn-beijing.aliyuncs.com/img/20201109145822.png)
 
 ##### rewind()方法
 
 - 该方法**只能在读模式下使用**
 - rewind()方法后，会恢复position、limit和capacity的值，变为进行get()前的值
 
-[![img](NIO.assets/20201109145852.png)](https://nyimapicture.oss-cn-beijing.aliyuncs.com/img/20201109145852.png)
+[![img](https://i.loli.net/2021/10/04/erUqnH3VJs16igl.png)](https://nyimapicture.oss-cn-beijing.aliyuncs.com/img/20201109145852.png)
 
 ##### clean()方法
 
 - clean()方法会将缓冲区中的各个属性恢复为最初的状态，position = 0, capacity = limit
 - **此时缓冲区的数据依然存在**，处于“被遗忘”状态，下次进行写操作时会覆盖这些数据
 
-[![img](NIO.assets/20201109145905.png)](https://nyimapicture.oss-cn-beijing.aliyuncs.com/img/20201109145905.png)
+[![img](https://i.loli.net/2021/10/04/OhYI5sVx6fct7bl.png)](https://nyimapicture.oss-cn-beijing.aliyuncs.com/img/20201109145905.png)
 
 ##### mark()和reset()方法
 
@@ -125,7 +125,7 @@ serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT);
 
 应用层不再需要在阻塞模式下对操作系统进行查询事件有没有发生，而是使用Selector代为进行查询
 
-![img](NIO.assets/java-io-nio-5.png)
+![img](https://i.loli.net/2021/10/04/gZdrqK9mH7ho2Gx.png)
 
 可以看见不同的操作系统Selector的实现方式是不一样的，不同的操作系统使用不同的Selector的实现类。在Netty中也是通过这个来进行设计的。
 
