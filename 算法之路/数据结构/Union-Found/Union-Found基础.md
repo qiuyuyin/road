@@ -109,6 +109,7 @@ return index;
 虽然层数已经转为3层以下，但是还是可以将效率进一步提高，通过添加一个加权值，可以在union的时候对数据进行整理，就类似于平衡二叉树。在加入的时候对数据进行平衡调整。
 
 ```java
+
 public void union(int p,int q){
     int pID = find(p);
     int qID = find(q);
